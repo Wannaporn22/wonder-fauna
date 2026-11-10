@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonder Fauna - สารานุกรมสัตว์โลกแปลกและน่ารัก</title>
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           1. CORE STYLES & VARIABLES
+           ========================================== */
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: rgba(23, 32, 54, 0.7);
+            --bg-card-hover: rgba(30, 42, 69, 0.9);
+            --accent-cyan: #00f2fe;
+            --accent-blue: #4facfe;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(79, 172, 254, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==========================================
+           2. HEADER & HERO SECTION
+           ========================================== */
+        header {
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 50px;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           3. CONTROLS (SEARCH & FILTER)
+           ========================================== */
+        .controls-section {
+            margin: 35px 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Search Box */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #0b0f19;
+            font-weight: 600;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        /* ==========================================
+           4. GALLERY GRID & CARDS
+           ========================================== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            background: rgba(11, 15, 25, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-scientific {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .status-tag {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .status-lc { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .status-vu { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+        .status-cr { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        .btn-more {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 0;
+            display: none;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* ==========================================
+           5. MODAL POPUP
+           ========================================== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: #131b2e;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            max-width: 650px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: #ef4444;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-header-info {
+            margin-bottom: 16px;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.03);
+            padding: 16px;
+            border-radius: var(--radius-md);
+        }
+
+        .modal-info-item h4 {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .modal-info-item p {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .modal-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="hero-badge">
+                <i class="fa-solid fa-compass"></i>
+                <span>Explore The Wild World</span>
+            </div>
+            <h1>Wonder Fauna Encyclopedia</h1>
+            <p>ค้นพบความมหัศจรรย์ของสิ่งมีชีวิตหลากสายพันธุ์ทั่วทุกมุมโลก รวบรวมข้อมูลเรื่องน่ารู้ของสัตว์แปลกและน่ารักไว้ในที่เดียว</p>
+        </header>
+
+        <!-- Controls Section -->
+        <section class="controls-section">
+            <!-- Search Box -->
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาชื่อสัตว์ หรือชื่อวิทยาศาสตร์...">
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fa-solid fa-border-all"></i> ทั้งหมด
+                </button>
+                <button class="filter-btn" data-filter="mammal">
+                    <i class="fa-solid fa-paw"></i> สัตว์เลี้ยงลูกด้วยนม
+                </button>
+                <button class="filter-btn" data-filter="reptile">
+                    <i class="fa-solid fa-frog"></i> ครึ่งบกครึ่งน้ำ / เลื้อยคลาน
+                </button>
+                <button class="filter-btn" data-filter="bird">
+                    <i class="fa-solid fa-crow"></i> นก & สัตว์ปีก
+                </button>
+                <button class="filter-btn" data-filter="marine">
+                    <i class="fa-solid fa-fish-fins"></i> สัตว์น้ำ & ทะเล
+                </button>
+            </div>
+        </section>
+
+        <!-- Gallery Grid -->
+        <main class="gallery-grid" id="galleryGrid">
+            
+            <!-- Card 1 -->
+            <article class="card" data-category="mammal" data-name="เม่นแคระ Pygmy Hedgehog">
+                <div class="card-img-wrapper">
+                    <span class="badge-category">สัตว์เลี้ยงลูกด้วยนม</span>
+                    <img src="https://images.unsplash.com/photo-1551887196-72e32afd3ec5?auto=format&fit=crop&w=800&q=80" alt="เม่นแคระ">
+                </div>
+                <div class="card-content">
+                    <h2 class="card-title">เม่นแคระ</h2>
+                    <p class="card-scientific">Atelerix albiventris</p>
+                    <p class="card-desc">สัตว์ขนาดเล็กที่มีหนามแหลมปกคลุมทั่วลำตัว มักม้วนตัวเป็นทรงกลมเมื่อรู้สึกไม่ปลอดภัย</p>
+                    <div class="card-footer">
+                        <span class="status-tag status-lc">เสี่ยงต่ำ (LC)</span>
+                        <span class="btn-more">เพิ่มเติม <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="card" data-category="reptile" data-name="หมาน้ำ แอกโซลอทล์ Axolotl">
+                <div class="card-img-wrapper">
+                    <span class="badge-category">ครึ่งบกครึ่งน้ำ</span>
+                    <img src="
